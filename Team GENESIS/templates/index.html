@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<!-- StructoX API config: Flask injects key via env var, never hardcode here -->
+<script>window.STRUCTOX_API_KEY = "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";</script>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>StructoX — AI Structural Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<link rel="stylesheet" href="/static/css/style.css"/>
+</head>
+<body>
+
+<!-- ══ Sidebar ══════════════════════════════════════════════════════════ --><br>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <img src="/static/uploads/logo.png" alt="SX" style="width:60px;height:auto;border-radius:12px;object-fit:contain" onerror="this.style.display='none';document.getElementById('sb-fallback').style.display='grid'">
+    <div class="logo-mark" id="sb-fallback" style="display:none">SX</div>
+  </div>
+
+  <nav class="nav-stack">
+    <button class="nav-item active" data-tab="upload">
+      <i class="fa-solid fa-upload"></i><span>Upload</span>
+    </button>
+    <button class="nav-item" data-tab="parse">
+      <i class="fa-solid fa-vector-square"></i><span>Stage 1 · Parse</span>
+    </button>
+    <button class="nav-item" data-tab="geometry">
+      <i class="fa-solid fa-diagram-project"></i><span>Stage 2 · Geometry</span>
+    </button>
+    <button class="nav-item" data-tab="model3d">
+      <i class="fa-solid fa-cube"></i><span>Stage 3 · 3D Model</span>
+    </button>
+    <button class="nav-item" data-tab="materials">
+      <i class="fa-solid fa-flask"></i><span>Stage 4 · Materials</span>
+    </button>
+    <button class="nav-item" data-tab="explain">
+      <i class="fa-solid fa-brain"></i><span>Stage 5 · Explain</span>
+    </button>
+  </nav>
+
+  <div class="nav-bottom">
+    <div class="pipeline-status" id="pipeline-status">
+      <div class="ps-label">Pipeline</div>
+      <div class="ps-dots">
+        <span class="ps-dot" id="dot-1" title="Stage 1: Parse"></span>
+        <span class="ps-dot" id="dot-2" title="Stage 2: Geometry"></span>
+        <span class="ps-dot" id="dot-3" title="Stage 3: 3D"></span>
+        <span class="ps-dot" id="dot-4" title="Stage 4: Materials"></span>
+        <span class="ps-dot" id="dot-5" title="Stage 5: Explain"></span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══ Main ═════════════════════════════════════════════════════════════ -->
+<div class="main-wrap">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <img src="/static/uploads/name.png" class="topbar-logo-img" alt="StructoX" onerror="this.style.display='none'; document.getElementById('topbar-title').style.display='block'">
+    <div class="topbar-title" id="topbar-title">StructoX</div>
+    <div class="topbar-controls">
+
+      <!-- ── Inline Translator ───────────────────────────────────────── -->
+      <div class="topbar-translator" id="topbar-translator">
+        <button class="tr-globe-btn" id="tr-globe-btn" title="Translate UI">
+          <i class="fa-solid fa-globe"></i>
+          <span class="tr-globe-label" id="tr-globe-label">EN</span>
+          <i class="fa-solid fa-chevron-down tr-globe-caret" id="tr-globe-caret"></i>
+        </button>
+        <div class="tr-dropdown" id="tr-dropdown">
+          <div class="tr-dropdown-header">
+            <i class="fa-solid fa-language"></i> Translate Interface
+          </div>
+          <div class="tr-dropdown-body">
+            <div class="tr-select-wrap">
+              <i class="fa-solid fa-earth-americas tr-select-icon"></i>
+              <select class="tr-select" id="tr-lang-select">
+                <option value="">— Select language —</option>
+                <option value="hi">🇮🇳 Hindi</option>
+                <option value="mr">🇮🇳 Marathi</option>
+                <option value="gu">🇮🇳 Gujarati</option>
+                <option value="bn">🇮🇳 Bengali</option>
+                <option value="ta">🇮🇳 Tamil</option>
+                <option value="te">🇮🇳 Telugu</option>
+                <option value="kn">🇮🇳 Kannada</option>
+                <option value="ml">🇮🇳 Malayalam</option>
+                <option value="pa">🇮🇳 Punjabi</option>
+                <option value="ur">🇵🇰 Urdu</option>
+                <option value="ar">🇸🇦 Arabic</option>
+                <option value="zh-CN">🇨🇳 Chinese (Simplified)</option>
+                <option value="zh-TW">🇹🇼 Chinese (Traditional)</option>
+                <option value="ja">🇯🇵 Japanese</option>
+                <option value="ko">🇰🇷 Korean</option>
+                <option value="fr">🇫🇷 French</option>
+                <option value="de">🇩🇪 German</option>
+                <option value="es">🇪🇸 Spanish</option>
+                <option value="pt">🇧🇷 Portuguese</option>
+                <option value="ru">🇷🇺 Russian</option>
+                <option value="it">🇮🇹 Italian</option>
+                <option value="tr">🇹🇷 Turkish</option>
+                <option value="nl">🇳🇱 Dutch</option>
+                <option value="pl">🇵🇱 Polish</option>
+                <option value="vi">🇻🇳 Vietnamese</option>
+                <option value="th">🇹🇭 Thai</option>
+                <option value="id">🇮🇩 Indonesian</option>
+                <option value="ms">🇲🇾 Malay</option>
+                <option value="fa">🇮🇷 Persian</option>
+                <option value="he">🇮🇱 Hebrew</option>
+              </select>
+            </div>
+            <div class="tr-dropdown-actions">
+              <button class="tr-btn" id="tr-btn">
+                <i class="fa-solid fa-rotate"></i> Translate
+              </button>
+              <button class="tr-reset-btn" id="tr-reset-btn" style="display:none">
+                <i class="fa-solid fa-arrow-rotate-left"></i> Reset
+              </button>
+            </div>
+            <div class="tr-status" id="tr-status"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input class="search-input" id="search-input" placeholder="Search features, stages, data…  (Ctrl+K)"/>
+        <button class="mic-btn" id="mic-btn"><i class="fa-solid fa-microphone"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Content panels -->
+  <div class="content-area">
+
+    <!-- ── TAB: Upload ─────────────────────────────────────────────── -->
+    <section class="tab-panel active" id="tab-upload">
+      <div class="panel-header">
+        <h1>Upload Floor Plan</h1>
+        <p>Drop a digital floor plan image — StructoX will run all 5 pipeline stages automatically.</p>
+      </div>
+
+      <div class="upload-hero-split">
+        <!-- LEFT: Drag & Drop -->
+        <div class="upload-zone" id="drop-zone">
+          <div class="uz-inner" id="uz-inner">
+            <div class="uz-icon"><i class="fa-solid fa-file-image"></i></div>
+            <div class="uz-title">Drag &amp; drop your floor plan</div>
+            <div class="uz-sub">PNG · JPG · BMP · TIFF · WebP — up to 20 MB</div>
+            <input type="file" id="file-input" accept="image/*" hidden/>
+            <button class="btn btn-accent" onclick="document.getElementById('file-input').click()">
+              <i class="fa-solid fa-folder-open"></i> Choose File
+            </button>
+          </div>
+          <div class="uz-preview" id="uz-preview" style="display:none">
+            <img id="img-orig" alt="Original plan"/>
+            <div class="uz-preview-label">Original — ready to process</div>
+            <button class="btn btn-accent" id="btn-run">
+              <i class="fa-solid fa-bolt"></i> Run Pipeline
+            </button>
+          </div>
+        </div>
+
+        <!-- RIGHT: Description -->
+        <div class="hero-description-card">
+          <div class="hero-desc-badge"><i class="fa-solid fa-bolt"></i> AI-Powered</div>
+          <h2 class="hero-desc-title">Transform 2D Plans<br>into 3D Intelligence</h2>
+          <p class="hero-desc-text">
+            StructoX transforms simple 2D floor plans into interactive 3D building models using AI. It automatically detects walls, rooms, and structural elements, then recommends the most suitable construction materials based on strength, durability, and cost.
+          </p>
+          <p class="hero-desc-text" style="margin-top:8px;opacity:.85">
+            Designed to simplify architectural analysis, StructoX helps engineers and designers visualize structures smarter, faster, and with greater confidence.
+          </p>
+          <div class="hero-features">
+            <div class="hero-feat"><i class="fa-solid fa-vector-square"></i><span>Wall & Room Detection</span></div>
+            <div class="hero-feat"><i class="fa-solid fa-cube"></i><span>3D Model Generation</span></div>
+            <div class="hero-feat"><i class="fa-solid fa-flask"></i><span>Material Optimization</span></div>
+            <div class="hero-feat"><i class="fa-solid fa-brain"></i><span>AI Explanations</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-card" id="progress-card" style="display:none">
+        <div class="prog-row"><span class="prog-stage" id="pg-s1">① Parse</span><span class="prog-dot" id="pgd-1"></span></div>
+        <div class="prog-row"><span class="prog-stage" id="pg-s2">② Geometry</span><span class="prog-dot" id="pgd-2"></span></div>
+        <div class="prog-row"><span class="prog-stage" id="pg-s3">③ 3D Model</span><span class="prog-dot" id="pgd-3"></span></div>
+        <div class="prog-row"><span class="prog-stage" id="pg-s4">④ Materials</span><span class="prog-dot" id="pgd-4"></span></div>
+        <div class="prog-row"><span class="prog-stage" id="pg-s5">⑤ Explain</span><span class="prog-dot" id="pgd-5"></span></div>
+      </div>
+
+      <div class="error-bar" id="error-bar" style="display:none">
+        <i class="fa-solid fa-triangle-exclamation"></i><span id="error-text"></span>
+      </div>
+
+      <!-- ── Default Material Recommendations (shown before pipeline run) ── -->
+      <div class="card" id="default-materials-card" style="margin-top:20px">
+        <div class="card-title"><i class="fa-solid fa-flask"></i> Sample Material Recommendations</div>
+        <p style="font-size:13px;color:#888;margin-bottom:14px;font-style:italic">
+          These are sample recommendations. Upload a floor plan and run the pipeline for accurate analysis.
+        </p>
+        <div style="overflow-x:auto">
+          <table class="cost-table">
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Material</th>
+                <th>Cost</th>
+                <th>Tag</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Load Bearing Wall</td>
+                <td>Red Brick</td>
+                <td style="font-family:var(--mono)">₹280/sq.ft</td>
+                <td><span class="tag tag-green">Best Value</span></td>
+              </tr>
+              <tr>
+                <td>Partition Wall</td>
+                <td>AAC Blocks</td>
+                <td style="font-family:var(--mono)">₹210/sq.ft</td>
+                <td><span class="tag tag-blue">Lightweight</span></td>
+              </tr>
+              <tr>
+                <td>Floor Slab</td>
+                <td>RCC</td>
+                <td style="font-family:var(--mono)">₹420/sq.ft</td>
+                <td><span class="tag tag-orange">Strong</span></td>
+              </tr>
+              <tr>
+                <td>Column</td>
+                <td>RCC M25</td>
+                <td style="font-family:var(--mono)">₹650/rmt</td>
+                <td><span class="tag tag-purple">Structural</span></td>
+              </tr>
+              <tr>
+                <td>Roof Slab</td>
+                <td>RCC M20</td>
+                <td style="font-family:var(--mono)">₹380/sq.ft</td>
+                <td><span class="tag tag-yellow">Standard</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TAB: Stage 1 — Parse ────────────────────────────────────── -->
+    <section class="tab-panel" id="tab-parse">
+      <div class="panel-header">
+        <h1><span class="stage-badge">Stage 1</span> Floor Plan Parser</h1>
+        <p>Wall detection · Room extraction · Opening identification · Junction classification</p>
+      </div>
+      <div id="parse-content">
+        <div class="empty-state"><i class="fa-solid fa-upload"></i><p>Upload a floor plan to begin</p></div>
+      </div>
+    </section>
+
+    <!-- ── TAB: Stage 2 — Geometry ────────────────────────────────── -->
+    <section class="tab-panel" id="tab-geometry">
+      <div class="panel-header">
+        <h1><span class="stage-badge">Stage 2</span> Geometry Reconstruction</h1>
+        <p>Wall graph · Load-bearing classification · Span analysis · Structural concerns</p>
+      </div>
+      <div id="geometry-content">
+        <div class="empty-state"><i class="fa-solid fa-upload"></i><p>Upload a floor plan to begin</p></div>
+      </div>
+    </section>
+
+    <!-- ── TAB: Stage 3 — 3D Model ────────────────────────────────── -->
+    <section class="tab-panel" id="tab-model3d">
+      <div class="panel-header">
+        <h1><span class="stage-badge">Stage 3</span> 3D Structural Model</h1>
+        <p>Extruded walls · Floor &amp; roof slabs · Column placement · Interactive Three.js viewer</p>
+      </div>
+      <div id="model3d-content">
+        <div class="empty-state"><i class="fa-solid fa-cube"></i><p>Upload a floor plan to generate 3D model</p></div>
+      </div>
+    </section>
+
+    <!-- ── TAB: Stage 4 — Materials ───────────────────────────────── -->
+    <section class="tab-panel" id="tab-materials">
+      <div class="panel-header">
+        <h1><span class="stage-badge">Stage 4</span> Material Analysis</h1>
+        <p>Cost–Strength tradeoff scoring · Ranked options per element · Full cost breakdown</p>
+      </div>
+      <div id="materials-content">
+        <div class="empty-state"><i class="fa-solid fa-flask"></i><p>Upload a floor plan to begin</p></div>
+      </div>
+    </section>
+
+    <!-- ── TAB: Stage 5 — Explain ─────────────────────────────────── -->
+    <section class="tab-panel" id="tab-explain">
+      <div class="panel-header">
+        <h1><span class="stage-badge">Stage 5</span> AI Explanation</h1>
+        <p>LLM-generated structural reasoning · Plain-language justifications · Engineer-grade insight</p>
+      </div>
+      <div id="explain-content">
+        <div class="empty-state"><i class="fa-solid fa-brain"></i><p>Upload a floor plan to generate explanations</p></div>
+      </div>
+    </section>
+
+  </div><!-- /content-area -->
+</div><!-- /main-wrap -->
+
+
+<!-- ══ StructoX Chatbot ══════════════════════════════════════════════════ -->
+
+<!-- FAB trigger -->
+<button class="chat-fab" id="chat-fab" title="Ask StructoX AI">
+  <span class="chat-fab-icon"><i class="fa-solid fa-comments"></i></span>
+  <span class="chat-fab-pulse"></span>
+  <span class="chat-unread" id="chat-unread" style="display:none">1</span>
+</button>
+
+<!-- Chat panel -->
+<div class="chat-panel" id="chat-panel">
+
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="chat-header-left">
+      <div class="chat-avatar">
+        <i class="fa-solid fa-robot"></i>
+        <span class="chat-avatar-dot"></span>
+      </div>
+      <div>
+        <div class="chat-header-name">StructoX Assistant</div>
+        <div class="chat-header-sub">Structural Intelligence · Always on</div>
+      </div>
+    </div>
+    <div class="chat-header-actions">
+      <button class="chat-hbtn" id="chat-clear-btn" title="Clear chat"><i class="fa-solid fa-broom"></i></button>
+      <button class="chat-hbtn" id="chat-close-btn" title="Close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div class="chat-messages" id="chat-messages">
+    <div class="chat-welcome">
+      <div class="chat-welcome-icon"><i class="fa-solid fa-hard-hat"></i></div>
+      <div class="chat-welcome-title">Hi! I'm the StructoX Assistant.</div>
+      <div class="chat-welcome-sub">Ask me anything about your floor plan analysis, materials, structural concerns, or how to use StructoX.</div>
+      <div class="chat-chips">
+        <button class="chat-chip" data-q="What does Stage 1 Parse do?">Stage 1 explained</button>
+        <button class="chat-chip" data-q="What materials are best for load-bearing walls?">Best LB wall materials</button>
+        <button class="chat-chip" data-q="How do I interpret structural concerns?">Structural concerns</button>
+        <button class="chat-chip" data-q="What is a tradeoff score?">Tradeoff score</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="chat-input-bar">
+    <div class="chat-input-wrap">
+      <textarea class="chat-input" id="chat-input" placeholder="Ask about your floor plan…" rows="1"></textarea>
+      <button class="chat-send-btn" id="chat-send-btn" title="Send">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </div>
+    <div class="chat-input-hint">Powered by Claude · StructoX context aware</div>
+  </div>
+
+</div>
+
+<script src="/static/js/main.js"></script>
+</body>
+</html>
